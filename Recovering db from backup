@@ -1,0 +1,17 @@
+Notes - 
+
+Innodb behaves differently than mysam. 
+
+  1. Refer to https://www.quora.com/blog/Jordan-Ryan/Web-Dev/How-to-Recover-innoDB-MySQL-files-using-MAMP-on-a-Mac for basic setup.
+  
+  2. Found errors in a loop (ALTER TABLE tablename DROP tablespace => table doesn't exist) (CREATE TABLE tablename => table already exists). 
+    a. Solution is to find if there are any orphaned ibd files without corresponding frm files. 
+    b. Delete them and then try dropping tablespace. 
+    c. In this case, I deleted and imported sql dump of DATABASECHANGELOG and DATABASECHANGELOGLOCK. 
+    
+  3. Errors when cattle is not able to find the MAMP mysql and connection refused error. 
+    a. killall -9 mysqld 
+    b. start server again. Wait till lsof -i tcp:3306 shows the mysql process. Sometimes it takes time (idk why) 
+    c. Try logging in with the default username and password. Check phpMyAdmin shows localhost:3306 running under localhost:8888.
+    d. Then retry running cattle. 
+   
