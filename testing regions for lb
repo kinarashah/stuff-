@@ -1,0 +1,9 @@
+1. Stop rancher/server container 
+2. stop and remove docker images in all hosts 
+  docker stop+rm $(docker ps -a -q) docker rmi $(docker images -a -q)
+3. make changes to LB 
+  build new image, tag and push to docker hub 
+4. point the validation test to the new image
+5. restart rancher/server container, create new envs and add hosts 
+6. clone the validation-test repo, create a venv and run the test_regions.py 
+7. change metadata image - alena1108/metadata:regions
