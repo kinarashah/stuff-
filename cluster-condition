@@ -1,0 +1,65 @@
+package clustercondition
+
+import (
+	"time"
+
+	"github.com/rancher/cluster-controller/controller"
+	"github.com/rancher/cluster-controller/controller/utils"
+	"github.com/sirupsen/logrus"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+const (
+	resyncPeriod = 30 * time.Second
+	updatePeriod = 30 * time.Second
+)
+
+type ClusterConditionSyncer struct {
+	config *controller.Config
+	/* type Config struct {
+		ClientSet           *client.V1
+		ClusterInformer     cache.SharedIndexInformer
+		ClusterNodeInformer cache.SharedIndexInformer
+	} */
+	syncQueue *utils.TaskQueue
+	stopCh    <-chan struct{}
+}
+
+func init() {
+	h := &ClusterConditionSyncer{}
+	controller.RegisterController(h.GetName(), h)
+	logrus.Info("registered controller")
+}
+
+func (h *ClusterConditionSyncer) Init(cfg *controller.Config) {
+	h.config = cfg
+	// h.syncQueue = utils.NewTaskQueue("clustersync", h.keyFunc, h.checkCluster)
+	logrus.Info("inited cluster condition monitor")
+	h.checkClusterCondition()
+}
+
+func (h *ClusterConditionSyncer) Run(stopc <-chan struct{}) error {
+	h.stopCh = stopc
+	logrus.Infof("running cluster condition monitor")
+	go h.syncQueue.Run()
+	<-stopc
+	return nil
+}
+
+func (h *ClusterConditionSyncer) Shutdown() {
+	logrus.Info("Shutting down cluster condition monitor")
+	h.syncQueue.Shutdown()
+}
+
+func (h *ClusterConditionSyncer) GetName() string {
+	return "ClusterConditionSyncer"
+}
+
+func (h *ClusterConditionSyncer) checkClusterCondition() {
+	options := metav1.ListOptions{}
+	clusters, err := h.config.ClientSet.ClusterClientV1.Clusters("").List(options)
+	if err != nil {
+		return
+	}
+	logrus.Infof("%v", clusters)
+}
