@@ -1,3 +1,10 @@
 Rancher-compose-executor 
-go build; mv ./rancher-compose-executor ./bin/rancher-compose; source venv/bin/activate; pip install -r requirements.txt; 
+go build; mv ./rancher-compose-executor ./bin/rancher-compose; 
+
+Cattle local tests 
+virtualenv venv; 
+(virtualenv -p python3 venv)
+source venv/bin/activate; pip install -r requirements.txt;
+(import errors - remove __init__py / check pip version, for 1.6 - pip) 
+(pip install mock) 
 py.test cattletest/core/test_compose.py 
