@@ -1,0 +1,2 @@
+curl -u $token --insecure -H 'Content-Type: application/json' https://localhost:8443/v3/nodes/local:machine-k6ct9?action=drain -X POST -d '{"deleteLocalData":"true","force":"false","gracePeriod":"-1","ignoreDaemonSets":"true","timeout":"20", "selector":{"matchLabels":{"key":"value"}}}'
+//don't forget -H 'Content-Type: application/json'
