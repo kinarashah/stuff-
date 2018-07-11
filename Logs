@@ -1,0 +1,6 @@
+Jul10 - figure out Label/FieldSelector, how to pass and use them 
+Jul11 - don't use em, since drain is at node level (write upper level struct first before coding) (no nodeName when selector is passed) 
+// 	if &input.Selector != nil {
+		args = append(args[1:], fmt.Sprintf("--selector=%s", metav1.FormatLabelSelector(&input.Selector)))
+	} 
+ 
