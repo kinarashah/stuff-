@@ -1,0 +1,2 @@
+mount --make-rshared / 
+docker restart kubelet 
