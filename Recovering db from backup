@@ -1,3 +1,5 @@
+mysqldump --single-transaction -h <mysql_server> -u<user> -p cattle > cattle.sql 
+
 Notes - 
 
 Innodb behaves differently than mysam. 
