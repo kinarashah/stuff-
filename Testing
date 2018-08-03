@@ -8,3 +8,10 @@ source venv/bin/activate; pip install -r requirements.txt;
 (import errors - remove __init__py / check pip version, for 1.6 - pip) 
 (pip install mock) 
 py.test cattletest/core/test_compose.py 
+
+
+Handle 3.7 
+```
+find /Users/kshah/go-rancher/src/github.com/rancher/rancher/tests/myenv/lib/python3.7/site-packages/kubernetes/ -name "*.py" | xargs sed -i 's/async=/async_=/g' 
+sed -i 's/if not async:/if not async_:/' /Users/kshah/go-rancher/src/github.com/rancher/rancher/tests/myenv/lib/python3.7/site-packages/kubernetes/client/api_client.py
+```
