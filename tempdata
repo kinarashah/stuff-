@@ -1,0 +1,41 @@
+	info, err := os.Stat("./data.json")
+	fmt.Println(info.Size())
+
+	resp, err := http.Get(dataURL)
+	if err != nil {
+		panic(fmt.Errorf("err here %v", err))
+	}
+	defer resp.Body.Close()
+	var testData Data2
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	respByte := buf.Bytes()
+	if err := json.Unmarshal(respByte, &testData); err != nil {
+		panic(fmt.Errorf("err here2 %v", err))
+	}
+
+	const (
+	dataURL = "https://raw.githubusercontent.com/kinarashah/kontainer-driver-metadata/data/data.json"
+)
+
+cloud_provider:
+    name: "openstack"
+    openstack_cloud_provider:
+        block_storage:
+            bs-version: "v2"
+            ignore-volume-az: false
+            trust-device-path: false
+        global:
+            auth-url: "http://XXXXXX:5001/v3"
+            domain-name: "default"
+            password: "XXXXX!"
+            tenant-id: "885c63821c3a43a78da157958eca3a99"
+            username: "XXXXX"
+        load_balancer:
+            create-monitor: true
+            floating-network-id: "d0456ee8-c9a9-4e0c-8be1-0974f1d13ac0"
+            lb-method: "ROUND_ROBIN"
+            lb-provider: "haproxy"
+            manage-security-groups: false
+            subnet-id: "12c1529a-2f54-43be-8f04-f766369c2b1d"
+            use-octavia: false
